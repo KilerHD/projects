@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+   <!-- CSS only -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+<style>
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing:;
+}
+#audio_item{
+  background-image: url("backlogo.png");
+  width: 300px;
+  height: 300px;
+  border: px solid blue;
+  border-radius: 150px;
+  position:absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50% , -50%);
+}
+#audio_item img{
+  width: 50px;
+  height: 50px;
+  margin: 10px 20px;
+  border: px solid red;
+}
+#inside{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50% , -50%);
+  display: flex;
+  justify-content: center;
+  border: px solid black;
+}
+#volume_btn{
+  margin:px;
+  width: 100%;
+  height: 100px;
+  border: px solid black;
+  position: relative;
+}
+input[type=range]{
+  display: flex;
+  justify-content: center;
+  transform: rotate(90deg);
+  position:absolute;
+  bottom: 50px;
+}
+#speed{
+  position: absolute;
+  right: 0;
+}
+#radio_name{
+  text-align: center;
+}
+</style>
+  </head>
+  <body>
+   <header>
+        <nav class="navbar navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">
+      <img src="logo.png" alt="برمجياتي" width="30" height="24" class="d-inline-block align-text-top">راديو برمجياتي
+    </a>
+  </div>
+</nav>
+    </header>
+ <h2 id="radio_name">radio 1</h2>
+<article id="audio_item">
+  <div id="inside">
+  <audio src="http://streams.radio.co/s909325731/listen"id="au"></audio>
+  <img src="pre.png"alt="preview" id="pre"/>
+  <img src="play.png"alt="play" id="play"/>
+  <img src="next.png"alt="next"id="next"/>
+  </div>
+</article>
+<article id="volume_btn">
+  <input type="range" id="volume"/>
+    <input type="range" id="speed" max="200" min="0"/>
+</article>
+<script>
+class Btn{
+  constructor(){
+this.file = document.getElementById("au");
+this.preview = document.getElementById("pre");
+this.play = document.getElementById("play");
+this.radio_name = document.getElementById("radio_name");
+this.working;
+this.nex = document.getElementById("next");
+this.play.addEventListener("click", ()=>{
+this.play_stop();
+});
+this.radio_names =[];
+this.radio_names[0] = "راديو الرابعة";
+this.radio_names[1] = "راديو السودان";
+this.radio_names[2] = "كابتال اف ام";
+this.radio_sta = [];
+this.radio_sta[0] = "http://streams.radio.co/s909325731/listen";
+this.radio_sta[1] = "http://mbn-channel-02.akacast.akamaistream.net/7/32/233451/v1/ibb.akacast.akamaistream.net/mbn_channel_02";
+this.radio_sta[2] = "http://198.245.61.161:8642/;stream.mp3";
+this.counter = 0;
+this.nex.addEventListener("click", ()=>{
+if(this.counter<this.radio_sta.length-1){
+  ++this.counter;
+  this.working = false;
+}
+else{
+    this.counter = 0;
+}
+localStorage.setItem("w",this.counter);
+this.resource();
+});
+this.preview.addEventListener("click", ()=>{
+ if(this.counter>0){
+  --this.counter;
+  this.working = false;
+}
+else{
+    this.counter = this.radio_sta.length-1;
+}
+localStorage.setItem("w",this.counter);
+this.resource();
+});
+this.resource();
+//this.play_stop();
+  }
+  play_stop(){
+    if(this.working == false){
+      this.file.play();
+     this.working = true;
+     this.play.src = "play.png";
+    }
+   else{
+      this.file.pause();
+     this.working = false;
+     this.play.src = "pause.png";
+    }
+    
+  }
+  resource(){
+    if(localStorage.getItem("w")!= null){
+  this.counter= localStorage.getItem("w");
+    }
+   this.file.src = this.radio_sta[this.counter];
+   this.radio_name.innerHTML = this.radio_names[this.counter];
+   this.working = false;
+   this.play_stop();
+  }
+}
+onload = new Btn();
+//alert(num);
+//alert(localStorage.getItem("v"));
+</script>
+<script src="Js.js"></script>
+  </body>
+</html>
